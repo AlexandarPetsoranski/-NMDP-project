@@ -1,21 +1,14 @@
 package com.example.demo.smokeSpecSuite;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.testng.annotations.BeforeClass;
 
-import static org.testng.AssertJUnit.assertNotNull;
+@SpringBootTest
 
-public class BaseSpec {
-    RestTemplate restTemplate = new RestTemplate();
+public class BaseSpec extends AbstractTestNGSpringContextTests {
 
     @Autowired
     WebClient client;
-
-    @BeforeClass
-    public void setup() {
-        assertNotNull(restTemplate);
-        WebClient.builder();
-    }
 }
