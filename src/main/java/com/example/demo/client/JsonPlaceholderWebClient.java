@@ -1,15 +1,16 @@
 package com.example.demo.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class JsonPlaceholderWebClient {
@@ -19,82 +20,51 @@ public class JsonPlaceholderWebClient {
     @Autowired
     WebClient client;
 
+    private static final String allPosts = "/posts";
+    private static final String singlePost = "/posts/%s";
+    private static final String allTodos = "/todos";
+
     public static String BASE_URL = "http://jsonplaceholder.typicode.com";
 
-    public Mono<String> getRequest(String addEndPoint) {
+    public Post getRequest(int postId) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.GET);
-        WebClient.RequestBodySpec bodySpec = uriSpec.uri(JsonPlaceholderWebClient.BASE_URL + addEndPoint);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        return bodySpec.exchangeToMono(response -> {
-            if (response.statusCode()
-                    .equals(HttpStatus.OK)) {
-                return response.bodyToMono(String.class);
-            } else if (response.statusCode()
-                    .is4xxClientError()) {
-                return Mono.just("Error response");
-            } else {
-                return response.createException()
-                        .flatMap(Mono::error);
-            }
-        });
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(String.format(JsonPlaceholderWebClient.BASE_URL + singlePost, postId));
+        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
+                .bodyToMono(Post.class).block();
     }
 
-    public Mono<String> postRequest(String addEndPoint, Post post) {
+    public List<Post> getRequest() {
+        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.GET);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(JsonPlaceholderWebClient.BASE_URL + allPosts);
+        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
+                .bodyToMono(new ParameterizedTypeReference<List<Post>>() {
+                }).block();
+    }
+
+    public List<Post> postRequest(Post post) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.POST);
-        WebClient.RequestBodySpec bodySpec = uriSpec.uri(JsonPlaceholderWebClient.BASE_URL + addEndPoint);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(JsonPlaceholderWebClient.BASE_URL + allPosts);
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(post);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        return headersSpec.exchangeToMono(response -> {
-            if (response.statusCode()
-                    .equals(HttpStatus.OK)) {
-                return response.bodyToMono(String.class);
-            } else if (response.statusCode()
-                    .is4xxClientError()) {
-                return Mono.just("Error response");
-            } else {
-                return response.createException()
-                        .flatMap(Mono::error);
-            }
-        });
+        return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null")
+                .bodyToMono(new ParameterizedTypeReference<List<Post>>() {
+                }).block();
     }
 
-    public Mono<String> editRequest(String addEndPoint, Post post) {
+    public Post editRequest(int postId, Post post) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PUT);
-        WebClient.RequestBodySpec bodySpec = uriSpec.uri(JsonPlaceholderWebClient.BASE_URL + addEndPoint);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(String.format(JsonPlaceholderWebClient.BASE_URL + singlePost, postId));
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(post);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        return headersSpec.exchangeToMono(response -> {
-            if (response.statusCode()
-                    .equals(HttpStatus.OK)) {
-                return response.bodyToMono(String.class);
-            } else if (response.statusCode()
-                    .is4xxClientError()) {
-                return Mono.just("Error response");
-            } else {
-                return response.createException()
-                        .flatMap(Mono::error);
-            }
-        });
+        return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null")
+                .bodyToMono(Post.class).block();
     }
 
-    public Mono<String> deleteRequest(String addEndPoint) {
+    public Post deleteRequest(int postId) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.DELETE);
-        WebClient.RequestBodySpec bodySpec = uriSpec.uri(addEndPoint);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(String.format(JsonPlaceholderWebClient.BASE_URL + singlePost, postId));
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        return bodySpec.exchangeToMono(response -> {
-            if (response.statusCode()
-                    .equals(HttpStatus.OK)) {
-                return response.bodyToMono(String.class);
-            } else if (response.statusCode()
-                    .is4xxClientError()) {
-                return Mono.just("Error response");
-            } else {
-                return response.createException()
-                        .flatMap(Mono::error);
-            }
-        });
+        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
+                .bodyToMono(Post.class).block();
     }
 }
