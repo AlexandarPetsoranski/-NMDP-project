@@ -7,8 +7,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootTest
 
-public class BaseSpec extends AbstractTestNGSpringContextTests {
+public class BaseTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
-    WebClient client;
+    private WebClient client;
 }
