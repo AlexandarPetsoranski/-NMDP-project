@@ -4,7 +4,6 @@ import com.example.demo.enumeration.EndPointEnum;
 import com.example.demo.enumeration.MethodTypeEnum;
 import com.example.demo.projectVeriables.ProjectVeriables;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -25,37 +24,40 @@ public class JsonPlaceholderWebClient {
     @Autowired
     WebClient client;
 
-    public ClientResponse sendGet(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers ) {
+    public ClientResponse sendGet(String url, MethodTypeEnum query,HttpHeaders headers ) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.GET);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null");
     }
-    public ClientResponse sendPost(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers, Post post) {
+    public ClientResponse sendPost(String url, MethodTypeEnum query, HttpHeaders headers, Object body) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.POST);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
-        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(post);
+        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(body);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null");
     }
 
-    public ClientResponse sendDelete(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers) {
+    public ClientResponse sendDelete(String url, MethodTypeEnum query,HttpHeaders headers) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.DELETE);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null");
     }
-    public ClientResponse sendPatch(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers, Post post) {
+    public ClientResponse sendPatch(String url, MethodTypeEnum query,HttpHeaders headers, Object body) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PATCH);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
-        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(post);
+        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(body);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null");
     }
-    public ClientResponse sendPut(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers) {
+    public ClientResponse sendPut(String url, MethodTypeEnum query,HttpHeaders headers,Object body) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PUT);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
+        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(body);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null");
+        return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null");
     }
+
+
 }
