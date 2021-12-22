@@ -24,69 +24,41 @@ public class JsonPlaceholderWebClient {
     @Autowired
     WebClient client;
 
-    public Object sendRequestWithID(MethodTypeEnum methodType, EndPointEnum endPoint, int elementId, Post requestBody) {
-        WebClient.RequestBodySpec bodySpec;
-        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec;
-        WebClient.RequestHeadersSpec<?> headersSpec;
-        Post post;
+    public Post sendGet(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers ) {
+        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.GET);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        switch (methodType) {
-            case GET:
-                uriSpec = client.method(HttpMethod.GET);
-                bodySpec = uriSpec.uri(String.format(ProjectVeriables.BASE_URL + endPoint, elementId));
-                logger.info("Sending GET request to : " + ProjectVeriables.BASE_URL + endPoint + "and getting element with ID" + elementId);
-                post = Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
-                        .bodyToMono(Post.class).block();
-                break;
-            case PUT:
-                uriSpec = client.method(HttpMethod.PUT);
-                bodySpec = uriSpec.uri(String.format(ProjectVeriables.BASE_URL + endPoint, elementId));
-                headersSpec = bodySpec.bodyValue(requestBody);
-                logger.info("Sending PUT request to : " + ProjectVeriables.BASE_URL + endPoint + "and changing element with ID" + elementId);
-                post = Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null")
-                        .bodyToMono(Post.class).block();
-                break;
-            case DELETE:
-                uriSpec = client.method(HttpMethod.DELETE);
-                bodySpec = uriSpec.uri(String.format(ProjectVeriables.BASE_URL + endPoint, elementId));
-                logger.info("Sending DELETE request to : " + ProjectVeriables.BASE_URL + endPoint + "and deleting element with ID" + elementId);
-                post = Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
-                        .bodyToMono(Post.class).block();
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + methodType);
-        }
-        return post;
+        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
+                .bodyToMono(Post.class).block();
     }
-
-    public List<Object> sendRequestToAll(MethodTypeEnum methodType, EndPointEnum endPoint, Post requestBody) {
-        WebClient.RequestBodySpec bodySpec;
-        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec;
-        WebClient.RequestHeadersSpec<?> headersSpec;
-        List<Object> allPosts;
+    public Post sendPost(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers, Post post) {
+        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.POST);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
+        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(post);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        switch (methodType) {
-            case GET:
-                uriSpec = client.method(HttpMethod.GET);
-                bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + endPoint);
-                logger.info("Sending GET request to : " + ProjectVeriables.BASE_URL + endPoint + "and getting all elements");
-                allPosts = Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
-                        .bodyToMono(new ParameterizedTypeReference<List<Object>>() {
-                        }).block();
-                break;
-
-            case POST:
-                uriSpec = client.method(HttpMethod.POST);
-                bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + endPoint);
-                logger.info("Sending POST request to : " + ProjectVeriables.BASE_URL + endPoint + "and creating new element");
-                headersSpec = bodySpec.bodyValue(requestBody);
-                allPosts = Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null")
-                        .bodyToMono(new ParameterizedTypeReference<List<Object>>() {
-                        }).block();
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + methodType);
-        }
-        return allPosts;
+        return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null")
+                .bodyToMono(Post.class).block();
+    }
+    public Post sendDelete(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers) {
+        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.DELETE);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
+                .bodyToMono(Post.class).block();
+    }
+    public Post sendPatch(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers, Post post) {
+        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PATCH);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
+        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(post);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null")
+                .bodyToMono(Post.class).block();
+    }
+    public Post sendPut(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers) {
+        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PUT);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
+                .bodyToMono(Post.class).block();
     }
 }
