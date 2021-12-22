@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -24,41 +25,37 @@ public class JsonPlaceholderWebClient {
     @Autowired
     WebClient client;
 
-    public Post sendGet(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers ) {
+    public ClientResponse sendGet(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers ) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.GET);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
-                .bodyToMono(Post.class).block();
+        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null");
     }
-    public Post sendPost(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers, Post post) {
+    public ClientResponse sendPost(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers, Post post) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.POST);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(post);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null")
-                .bodyToMono(Post.class).block();
+        return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null");
     }
-    public Post sendDelete(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers) {
+
+    public ClientResponse sendDelete(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.DELETE);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
-                .bodyToMono(Post.class).block();
+        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null");
     }
-    public Post sendPatch(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers, Post post) {
+    public ClientResponse sendPatch(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers, Post post) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PATCH);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(post);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null")
-                .bodyToMono(Post.class).block();
+        return Objects.requireNonNull(headersSpec.exchange().block(), "Response should be not null");
     }
-    public Post sendPut(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers) {
+    public ClientResponse sendPut(EndPointEnum url, MethodTypeEnum query,HttpHeaders headers) {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PUT);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(ProjectVeriables.BASE_URL + url);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null")
-                .bodyToMono(Post.class).block();
+        return Objects.requireNonNull(bodySpec.exchange().block(), "Response should be not null");
     }
 }
