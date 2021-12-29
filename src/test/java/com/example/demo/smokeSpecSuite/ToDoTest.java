@@ -24,25 +24,25 @@ public class ToDoTest extends BaseTest {
 
     @Test
     void testGetTodoById() {
-        Todo response = client.getTodo();
+        Todo response = client.getTodo(1);
         Assert.assertEquals((int) response.getId(), 1, "id of the first post does not match");
         Assert.assertEquals(response.getTitle(), TITLE, "Title does not match");
     }
     @Test
     private void testCreateNewTodo() {
-        List<Todo> response = client.postTodo();
+        List<Todo> response = client.postTodo(1);
         Assert.assertEquals((int) response.get(1).getId(), 9999, "id of the first post does not match");
     }
 
     @Test
     private void testEditTodoById() {
-        Todo response = client.putTodo();
+        Todo response = client.putTodo(1);
         Assert.assertEquals((int) response.getUser_Id(), 9999, "id of the first post does not match");
     }
 
     @Test
     private void testDeletePostById() {
-        Todo response = client.deleteTodo();
+        Todo response = client.deleteTodo(1);
         Assert.assertNull(response.getId(), "Post is not deleted");
     }
 }
