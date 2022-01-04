@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,22 +23,27 @@ public class PostTest extends BaseTest {
         Assert.assertFalse(allPosts.isEmpty(), "allPost arrays is empty! ");
     }
 
-   @Test
+    @Test
     void testGetPostById() {
         Post response = client.getPost(1);
         Assert.assertEquals((int) response.getId(), 1, "id of the first post does not match");
         Assert.assertEquals(response.getTitle(), TITLE, "Title does not match");
-        //client.
+
     }
+
     @Test
-    private void testCreateNewPost() {
-        List<Post> response = client.createPost();
-        Assert.assertEquals((int) response.get(1).getId(), 9999, "id of the first post does not match");
+    private void testCreateNewPost() throws URISyntaxException {
+        Post newPostElement = new Post(9999, 12, "TEST TITLE", "TEST BODY");
+        List<Post> response = client.createPost(newPostElement);
+        Assert.assertEquals((int)response.get(1).getUserId(), 9999, "userId of the new created post does not match");
+        Assert.assertEquals(response.get(1).getTitle(), "TEST TITLE", "title of the new created post does not match");
     }
 
     @Test
     private void testEditPostById() {
-        Post response = client.putPost(1);
+        Post newPostElement = new Post(9999, 12, "TEST TITLE", "TEST BODY");
+
+        Post response = client.putPost(1, newPostElement);
         Assert.assertEquals((int) response.getUserId(), 9999, "id of the first post does not match");
     }
 

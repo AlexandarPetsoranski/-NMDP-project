@@ -30,13 +30,16 @@ public class ToDoTest extends BaseTest {
     }
     @Test
     private void testCreateNewTodo() {
-        List<Todo> response = client.postTodo(1);
-        Assert.assertEquals((int) response.get(1).getId(), 9999, "id of the first post does not match");
-    }
+        Todo newTodoItem = new Todo(9999, 12, "TEST TITLE", true);
+        Todo response = client.postTodo(newTodoItem);
+        Assert.assertEquals((int)response.getUser_Id(), 9999, "userId of the new created Todo does not match");
+        Assert.assertEquals(response.getTitle(), "TEST TITLE", "title of the new created Todo does not match");    }
 
     @Test
     private void testEditTodoById() {
-        Todo response = client.putTodo(1);
+        Todo newTodoItem = new Todo(9999, 12, "TEST TITLE", true);
+
+        Todo response = client.putTodo(1, newTodoItem);
         Assert.assertEquals((int) response.getUser_Id(), 9999, "id of the first post does not match");
     }
 
