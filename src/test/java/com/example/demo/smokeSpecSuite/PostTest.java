@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,11 +31,11 @@ public class PostTest extends BaseTest {
     }
 
     @Test
-    private void testCreateNewPost() throws URISyntaxException {
+    private void testCreateNewPost(){
         Post newPostElement = new Post(9999, 12, "TEST TITLE", "TEST BODY");
-        List<Post> response = client.createPost(newPostElement);
-        Assert.assertEquals((int)response.get(1).getUserId(), 9999, "userId of the new created post does not match");
-        Assert.assertEquals(response.get(1).getTitle(), "TEST TITLE", "title of the new created post does not match");
+        Post response = client.createPost(newPostElement);
+        Assert.assertEquals((int)response.getUserId(), 9999, "userId of the new created post does not match");
+        Assert.assertEquals(response.getTitle(), "TEST TITLE", "title of the new created post does not match");
     }
 
     @Test
