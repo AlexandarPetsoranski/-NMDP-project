@@ -102,32 +102,32 @@ public class JsonPlaceholderWebClient {
         }).block();
     }
 
-    public ClientResponse sendGet(String url, HttpHeaders headers, MultiValueMap<String, String> myHash) {
-        return this.webClient.get().uri(url, (uriBuilder) -> uriBuilder.queryParams(myHash).build()).headers((httpHeaders) -> {
+    public ClientResponse sendGet(String url, HttpHeaders headers, MultiValueMap<String, String> queryParams) {
+        return this.webClient.get().uri(url, (uriBuilder) -> uriBuilder.queryParams(queryParams).build()).headers((httpHeaders) -> {
             httpHeaders.addAll(headers);
         }).exchange().block();
     }
 
-    public ClientResponse sendPost(String url, HttpHeaders headers, MultiValueMap<String, String> myHash, Object body, Class<?> bodyType) {
-        return this.webClient.post().uri(url, (uriBuilder) -> uriBuilder.queryParams(myHash).build()).body(BodyInserters.fromProducer(Mono.just(body), bodyType)).headers((httpHeaders) -> {
+    public ClientResponse sendPost(String url, HttpHeaders headers, MultiValueMap<String, String> queryParams, Object body, Class<?> bodyType) {
+        return this.webClient.post().uri(url, (uriBuilder) -> uriBuilder.queryParams(queryParams).build()).body(BodyInserters.fromProducer(Mono.just(body), bodyType)).headers((httpHeaders) -> {
             httpHeaders.addAll(headers);
         }).exchange().block();
     }
 
-    public ClientResponse sendDelete(String url, HttpHeaders headers, MultiValueMap<String, String> myHash) {
-        return this.webClient.delete().uri(url, (uriBuilder) -> uriBuilder.queryParams(myHash).build()).headers((httpHeaders) -> {
+    public ClientResponse sendDelete(String url, HttpHeaders headers, MultiValueMap<String, String> queryParams) {
+        return this.webClient.delete().uri(url, (uriBuilder) -> uriBuilder.queryParams(queryParams).build()).headers((httpHeaders) -> {
             httpHeaders.addAll(headers);
         }).exchange().block();
     }
 
-    public ClientResponse sendPatch(String url, HttpHeaders headers, MultiValueMap<String, String> myHash, Object body, Class<?> bodyType) {
-        return this.webClient.patch().uri(url, (uriBuilder) -> uriBuilder.queryParams(myHash).build()).body(BodyInserters.fromProducer(Mono.just(body), bodyType)).headers((httpHeaders) -> {
+    public ClientResponse sendPatch(String url, HttpHeaders headers, MultiValueMap<String, String> queryParams, Object body, Class<?> bodyType) {
+        return this.webClient.patch().uri(url, (uriBuilder) -> uriBuilder.queryParams(queryParams).build()).body(BodyInserters.fromProducer(Mono.just(body), bodyType)).headers((httpHeaders) -> {
             httpHeaders.addAll(headers);
         }).exchange().block();
     }
 
-    public ClientResponse sendPut(String url, HttpHeaders headers, MultiValueMap<String, String> myHash, Object body, Class<?> bodyType) {
-        return this.webClient.put().uri(url, (uriBuilder) -> uriBuilder.queryParams(myHash).build()).body(BodyInserters.fromProducer(Mono.just(body), bodyType)).headers((httpHeaders) -> {
+    public ClientResponse sendPut(String url, HttpHeaders headers, MultiValueMap<String, String> queryParams, Object body, Class<?> bodyType) {
+        return this.webClient.put().uri(url, (uriBuilder) -> uriBuilder.queryParams(queryParams).build()).body(BodyInserters.fromProducer(Mono.just(body), bodyType)).headers((httpHeaders) -> {
             httpHeaders.addAll(headers);
         }).exchange().block();
     }

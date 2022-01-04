@@ -2,13 +2,14 @@ package com.example.demo.smokeSpecSuite;
 
 import com.example.demo.client.JsonPlaceholderWebClient;
 import com.example.demo.client.Post;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.List;
-
+@Log4j2
 public class PostTest extends BaseTest {
 
     private static final String TITLE = "sunt aut facere repellat provident occaecati excepturi optio reprehenderit";
@@ -18,7 +19,7 @@ public class PostTest extends BaseTest {
     @Test
     private void testGetAllPosts() {
         List<Post> allPosts = client.getAllPosts();
-        System.out.println("ALL POSTS" + Arrays.toString(allPosts.toArray()));
+        log.info("ALL POSTS" + Arrays.toString(allPosts.toArray()));
         Assert.assertFalse(allPosts.isEmpty(), "allPost arrays is empty! ");
     }
 
