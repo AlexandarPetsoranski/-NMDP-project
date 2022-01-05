@@ -1,6 +1,6 @@
 package com.example.demo.smokeSpecSuite;
 
-import com.example.demo.client.JsonPlaceholderWebClient;
+import com.example.demo.client.JsonPlaceholderTodoWebClient;
 import com.example.demo.client.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
@@ -13,7 +13,7 @@ public class ToDoTest extends BaseTest {
     private static final String TITLE = "delectus aut autem";
 
     @Autowired
-    private JsonPlaceholderWebClient client;
+    private JsonPlaceholderTodoWebClient client;
 
     @Test
     private void testGetAllTodos() {
