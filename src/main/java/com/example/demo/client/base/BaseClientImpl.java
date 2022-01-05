@@ -1,4 +1,4 @@
-package com.example.demo.client.baseClient;
+package com.example.demo.client.base;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
