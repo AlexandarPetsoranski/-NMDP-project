@@ -14,4 +14,5 @@ public interface BaseClient {
     ClientResponse sendPatch(String url, HttpHeaders headers, MultiValueMap<String, String> queryParams, Object body, Class<?> bodyType);
 
     ClientResponse sendPut(String url, HttpHeaders headers, MultiValueMap<String, String> queryParams, Object body, Class<?> bodyType);
+
 }
