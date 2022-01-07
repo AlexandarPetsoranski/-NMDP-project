@@ -38,18 +38,15 @@ public class RestConfig {
         return WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .filters(exchangeFilterFunctions -> {
-                    exchangeFilterFunctions.add(logRequest());
-                    exchangeFilterFunctions.add(logResponse());
-                })
-
+                .filters(exchangeFilterFunctions -> exchangeFilterFunctions.add(logRequest()))
+                .filters(exchangeFilterFunctions -> exchangeFilterFunctions.add(logResponse()))
                 .build();
     }
 
     public ExchangeFilterFunction logRequest(){
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
             if (log.isDebugEnabled()) {
-                StringBuilder sb = new StringBuilder("Request: \n");
+                StringBuilder sb = new StringBuilder("Request WW: \n");
                 log.info("Request: {} {}", clientRequest.method(), clientRequest.url());
                 clientRequest
                         .headers()
@@ -63,7 +60,7 @@ public class RestConfig {
     public ExchangeFilterFunction logResponse(){
         return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
             if (log.isDebugEnabled()) {
-                log.info("Response status: {}", clientResponse.statusCode());
+                log.info("Response status: {} QQQ", clientResponse.statusCode());
                 clientResponse.headers().asHttpHeaders().forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
             }
             return Mono.just(clientResponse);

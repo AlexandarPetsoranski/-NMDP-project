@@ -14,10 +14,21 @@ public class BinTests extends BaseTest {
     @Autowired
     BinWebClient binWebClient;
 
+    @Test
+    private void sendHttpAuth() {
+        ClientResponse response = binWebClient.httpBasicAuth("admin", "admin");
+        Assert.assertTrue(response.statusCode().is2xxSuccessful(), "Response code is not 200");
+    }
 
     @Test
-    private void sendAuthenticationGetCall() {
-        ClientResponse response = binWebClient.httpBasicAuth("admin", "admin");
-        Assert.assertTrue(response.statusCode().is2xxSuccessful());
+    private void sendBearerAuth(){
+        ClientResponse response = binWebClient.bearerAuthentication("Test token");
+        Assert.assertTrue(response.statusCode().is4xxClientError(), "Response code is not 401");
+    }
+
+    @Test
+    private void sendDigestAuth() {
+        ClientResponse response = binWebClient.digestAuthentication("test qop","admin", "admin");
+        Assert.assertTrue(response.statusCode().is2xxSuccessful(), "Response code is not 200");
     }
 }
