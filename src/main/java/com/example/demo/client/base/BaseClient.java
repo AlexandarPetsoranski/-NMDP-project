@@ -1,4 +1,4 @@
-package com.example.demo.client.baseClient;
+package com.example.demo.client.base;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.MultiValueMap;
@@ -14,4 +14,5 @@ public interface BaseClient {
     ClientResponse sendPatch(String url, HttpHeaders headers, MultiValueMap<String, String> queryParams, Object body, Class<?> bodyType);
 
     ClientResponse sendPut(String url, HttpHeaders headers, MultiValueMap<String, String> queryParams, Object body, Class<?> bodyType);
+
 }

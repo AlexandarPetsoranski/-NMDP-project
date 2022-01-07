@@ -1,6 +1,6 @@
 package com.example.demo.client;
 
-import com.example.demo.client.baseClient.BaseClientImpl;
+import com.example.demo.client.base.BaseClientImpl;
 import com.example.demo.projectVeriables.ProjectVeriables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
