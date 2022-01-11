@@ -26,7 +26,7 @@ public class BinWebClient {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setBasicAuth(userName,password);
         ClientResponse clientResponse = baseClientImpl.sendGet(String.format(ProjectVeriables.BIN_BASE_URL + "/basic-auth/%s/%s", userName, password), httpHeaders, queryParams);
-        return clientResponse.bodyToMono(ClientResponse.class).block();
+        return clientResponse;
     }
 
     public ClientResponse bearerAuthentication(String token) {
@@ -35,22 +35,22 @@ public class BinWebClient {
         httpHeaders.setContentType(MediaType.TEXT_HTML);
         httpHeaders.setBearerAuth(token);
         ClientResponse clientResponse = baseClientImpl.sendGet((ProjectVeriables.BIN_BASE_URL + "/bearer" ), httpHeaders, queryParams);
-        return clientResponse.bodyToMono(ClientResponse.class).block();
+        return clientResponse;
     }
 
     public ClientResponse digestAuthentication(String qop, String userName, String password) {
         MultiValueMap queryParams = new LinkedMultiValueMap();
-        httpHeaders.setAccept(List.of(MediaType.TEXT_HTML));
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setBasicAuth(userName,password);
         ClientResponse clientResponse = baseClientImpl.sendGet(String.format(ProjectVeriables.BIN_BASE_URL + "/digest-auth/%s/%s/%s", qop,userName, password), httpHeaders, queryParams);
-        return clientResponse.bodyToMono(ClientResponse.class).block();
+        return clientResponse;
     }
 
     public ClientResponse digestAuthenticationAndAlgorithm(String qop, String userName, String password) {
         MultiValueMap queryParams = new LinkedMultiValueMap();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         ClientResponse clientResponse = baseClientImpl.sendGet(String.format(ProjectVeriables.BIN_BASE_URL + "/basic-auth/%1$s/%2$s/%3$s", qop,userName, password), httpHeaders, queryParams);
-        return clientResponse.bodyToMono(ClientResponse.class).block();
+        return clientResponse;
     }
 }

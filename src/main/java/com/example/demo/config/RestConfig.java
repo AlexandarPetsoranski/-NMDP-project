@@ -46,7 +46,7 @@ public class RestConfig {
     public ExchangeFilterFunction logRequest(){
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
             if (log.isDebugEnabled()) {
-                StringBuilder sb = new StringBuilder("Request WW: \n");
+                StringBuilder sb = new StringBuilder("Request: \n");
                 log.info("Request: {} {}", clientRequest.method(), clientRequest.url());
                 clientRequest
                         .headers()
@@ -60,7 +60,7 @@ public class RestConfig {
     public ExchangeFilterFunction logResponse(){
         return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
             if (log.isDebugEnabled()) {
-                log.info("Response status: {} QQQ", clientResponse.statusCode());
+                log.info("Response status: {} ", clientResponse.statusCode());
                 clientResponse.headers().asHttpHeaders().forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
             }
             return Mono.just(clientResponse);
